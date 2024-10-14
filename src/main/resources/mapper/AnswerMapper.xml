@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="top.ychen.qasystem.mapper.AnswerMapper">
+
+    <insert id="insertAnswer" parameterType="top.ychen.qasystem.entity.Answer" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO answers(content, question_id, user_id)
+        VALUES (#{content}, #{questionId}, #{userId})
+    </insert>
+    <resultMap id="answerMap" type="top.ychen.qasystem.entity.Answer">
+        <id property="id" column="id"/>
+        <result property="content" column="content"/>
+        <result property="questionId" column="question_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="createdAt" column="created_at"/>
+        <association property="user" javaType="top.ychen.qasystem.entity.User">
+            <id property="id" column="user_id"/>
+            <result property="username" column="username"/>
+        </association>
+        <association property="question" javaType="top.ychen.qasystem.entity.Question">
+            <id property="id" column="question_id"/>
+            <result property="title" column="title"/>
+            <result property="content" column="content"/>
+            <result property="userId" column="user_id"/>
+            <result property="createdAt" column="created_at"/>
+            <association property="user" javaType="top.ychen.qasystem.entity.User">
+                <id property="id" column="user_id"/>
+                <result property="username" column="username"/>
+            </association>
+        </association>
+    </resultMap>
+    <select id="findAnswerByQuestionId" resultMap="answerMap">
+        SELECT a.id, u.username, a.content, a.created_at
+        FROM answers a
+                 LEFT JOIN users u ON u.id = a.user_id
+                 LEFT JOIN questions q ON q.id = a.question_id
+        WHERE question_id = #{questionId}
+    </select>
+    <select id="findAnswerByUserId" resultMap="answerMap">
+        SELECT a.id, u.username, a.content, a.created_at
+        FROM answers a
+                 LEFT JOIN users u ON u.id = a.user_id
+                 LEFT JOIN questions q ON q.id = a.question_id
+        WHERE a.user_id = #{userId}
+    </select>
+</mapper>

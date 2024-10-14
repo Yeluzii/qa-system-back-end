@@ -1,4 +1,4 @@
-package top.ychen.springboot.database.common;
+package top.ychen.qasystem.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

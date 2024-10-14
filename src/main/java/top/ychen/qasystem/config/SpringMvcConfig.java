@@ -1,4 +1,4 @@
-package top.ychen.springboot.database.config;
+package top.ychen.qasystem.config;
 
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;

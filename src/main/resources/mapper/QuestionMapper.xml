@@ -1,14 +1,51 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="top.ychen.qasystem.mapper.UserMapper">
-    <select id="findUsername" resultType="top.ychen.qasystem.entity.User">
-        SELECT *
-        FROM users
-        WHERE username = #{username}
-    </select>
-
-    <insert id="insertUser" parameterType="top.ychen.qasystem.entity.User" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO users(username, password, email)
-        VALUES (#{username}, #{password}, #{email})
+<mapper namespace="top.ychen.qasystem.mapper.QuestionMapper">
+    <insert id="insertQuestion" parameterType="top.ychen.qasystem.entity.Question" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO questions(title, content, user_id)
+        VALUES (#{title}, #{content}, #{userId})
     </insert>
+    <select id="findAll" resultMap="questionResultMap">
+        SELECT q.id,u.username,q.title,q.content,q.created_at
+        FROM questions q
+        LEFT JOIN users u ON u.id = q.user_id
+    </select>
+    <resultMap id="questionResultMap" type="top.ychen.qasystem.entity.Question">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="content" column="content"/>
+        <result property="userId" column="user_id"/>
+        <result property="createdAt" column="created_at"/>
+        <association property="user" javaType="top.ychen.qasystem.entity.User">
+            <id property="id" column="id"/>
+            <result property="username" column="username"/>
+        </association>
+        <collection property="answers" ofType="top.ychen.qasystem.entity.Answer">
+            <id property="id" column="id"/>
+            <result property="content" column="content"/>
+            <result property="questionId" column="question_id"/>
+            <result property="userId" column="user_id"/>
+            <result property="createdAt" column="created_at"/>
+        </collection>
+    </resultMap>
+    <select id="findById" resultMap="questionResultMap">
+        SELECT q.id,u.username,q.title,q.content,q.created_at
+        FROM questions q
+                 LEFT JOIN users u ON u.id = q.user_id
+        WHERE q.id = #{id}
+    </select>
+    <select id="findByUserId" resultMap="questionResultMap">
+        SELECT q.id,u.username,q.title,q.content,q.created_at
+        FROM questions q
+                 LEFT JOIN users u ON u.id = q.user_id
+        WHERE q.user_id = #{userId}
+    </select>
+    <select id="findSpecialQuestion" resultMap="questionResultMap">
+        SELECT q.id,u.username,q.title,q.content,q.created_at
+        FROM questions q
+                 LEFT JOIN users u ON u.id = q.user_id
+        WHERE
+                q.title LIKE CONCAT('%', #{keyword}, '%')
+        OR q.content LIKE CONCAT('%', #{keyword}, '%')
+    </select>
 </mapper>
