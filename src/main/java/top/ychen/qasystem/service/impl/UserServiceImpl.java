@@ -12,12 +12,9 @@ public class UserServiceImpl  implements UserService {
     @Resource
     private UserMapper userMapper;
     @Override
-    public User login(String username, String password) {
-        User user = userMapper.findUsername(username);
-        if (user != null && PasswordUtil.checkPassword(password, user.getPassword())) {
-            return user;
-        }
-        return null;
+    public boolean login(String username, String password) {
+        User user = userMapper.findUserByUsername(username);
+        return user != null && PasswordUtil.checkPassword(password, user.getPassword());
     }
 
     @Override
@@ -29,5 +26,10 @@ public class UserServiceImpl  implements UserService {
     @Override
     public int findUserId(String username) {
         return userMapper.findUserId(username);
+    }
+
+    @Override
+    public User findUserByUsername(String username) {
+        return userMapper.findUserByUsername(username);
     }
 }

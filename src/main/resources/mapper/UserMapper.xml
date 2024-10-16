@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="top.ychen.qasystem.mapper.UserMapper">
-    <select id="findUsername" resultType="top.ychen.qasystem.entity.User">
-        SELECT *
+    <resultMap id="userResultMap" type="top.ychen.qasystem.entity.User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="password" column="password"/>
+        <result property="email" column="email"/>
+        <result property="createdAt" column="created_at"/>
+    </resultMap>
+    <select id="findUserId" resultType="java.lang.Integer">
+        SELECT id
         FROM users
         WHERE username = #{username}
     </select>
-    <select id="findUserId" resultType="java.lang.Integer">
-        SELECT id
+    <select id="findUserByUsername" resultMap="userResultMap">
+        SELECT *
         FROM users
         WHERE username = #{username}
     </select>

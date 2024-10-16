@@ -5,7 +5,7 @@ import top.ychen.qasystem.entity.User;
 
 @Mapper
 public interface UserMapper {
-    User findUsername(String username);
     int findUserId(String username);
     int insertUser(User user);
+    User findUserByUsername(String username);
 }

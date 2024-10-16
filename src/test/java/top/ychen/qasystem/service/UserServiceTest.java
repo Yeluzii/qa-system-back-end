@@ -29,4 +29,9 @@ class UserServiceTest {
     void findUserId() {
         log.info("id:{}", userService.findUserId("admin"));
     }
+
+    @Test
+    void findUserByUsername() {
+        log.info("user:{}", userService.findUserByUsername("admin"));
+    }
 }
