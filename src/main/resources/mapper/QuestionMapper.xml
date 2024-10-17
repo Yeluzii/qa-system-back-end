@@ -6,7 +6,7 @@
         VALUES (#{title}, #{content}, #{userId})
     </insert>
     <select id="findAll" resultMap="questionResultMap">
-        SELECT q.id,u.username,q.title,q.content,q.created_at
+        SELECT q.id,u.username,u.avatar,q.title,q.content,q.created_at
         FROM questions q
         LEFT JOIN users u ON u.id = q.user_id
     </select>
@@ -19,6 +19,9 @@
         <association property="user" javaType="top.ychen.qasystem.entity.User">
             <id property="id" column="id"/>
             <result property="username" column="username"/>
+            <result property="avatar" column="avatar"/>
+            <result property="email" column="email"/>
+            <result property="createdAt" column="created_at"/>
         </association>
         <collection property="answers" ofType="top.ychen.qasystem.entity.Answer">
             <id property="id" column="id"/>
@@ -29,19 +32,19 @@
         </collection>
     </resultMap>
     <select id="findById" resultMap="questionResultMap">
-        SELECT q.id,u.username,q.title,q.content,q.created_at
+        SELECT q.id,u.username,u.avatar,q.title,q.content,q.created_at
         FROM questions q
                  LEFT JOIN users u ON u.id = q.user_id
         WHERE q.id = #{id}
     </select>
     <select id="findByUserId" resultMap="questionResultMap">
-        SELECT q.id,u.username,q.title,q.content,q.created_at
+        SELECT q.id,u.username,u.avatar,q.title,q.content,q.created_at
         FROM questions q
                  LEFT JOIN users u ON u.id = q.user_id
         WHERE q.user_id = #{userId}
     </select>
     <select id="findSpecialQuestion" resultMap="questionResultMap">
-        SELECT q.id,u.username,q.title,q.content,q.created_at
+        SELECT q.id,u.username,u.avatar,q.title,q.content,q.created_at
         FROM questions q
                  LEFT JOIN users u ON u.id = q.user_id
         WHERE

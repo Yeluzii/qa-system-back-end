@@ -15,6 +15,9 @@
         <association property="user" javaType="top.ychen.qasystem.entity.User">
             <id property="id" column="user_id"/>
             <result property="username" column="username"/>
+            <result property="avatar" column="avatar"/>
+            <result property="email" column="email"/>
+            <result property="createdAt" column="created_at"/>
         </association>
         <association property="question" javaType="top.ychen.qasystem.entity.Question">
             <id property="id" column="question_id"/>
@@ -29,14 +32,14 @@
         </association>
     </resultMap>
     <select id="findAnswerByQuestionId" resultMap="answerMap">
-        SELECT a.id, u.username, a.content, a.created_at
+        SELECT a.id, u.username,u.avatar, a.content, a.created_at
         FROM answers a
                  LEFT JOIN users u ON u.id = a.user_id
                  LEFT JOIN questions q ON q.id = a.question_id
         WHERE question_id = #{questionId}
     </select>
     <select id="findAnswerByUserId" resultMap="answerMap">
-        SELECT a.id, u.username, a.content, a.created_at
+        SELECT a.id, u.username, u.avatar, a.content, a.created_at
         FROM answers a
                  LEFT JOIN users u ON u.id = a.user_id
                  LEFT JOIN questions q ON q.id = a.question_id

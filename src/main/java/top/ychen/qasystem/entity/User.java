@@ -15,4 +15,5 @@ public class User {
     private String password;
     private String email;
     private java.sql.Timestamp createdAt;
+    private String avatar;
 }

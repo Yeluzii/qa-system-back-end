@@ -15,19 +15,38 @@ public class AnswerController {
     private AnswerService answerService;
 
     @PostMapping("/reply")
-    public void answerQuestion(@RequestBody Answer answer) {
-        answerService.answerQuestion(answer);
+    public ResponseResult<Void> answerQuestion(@RequestBody Answer answer) {
+        try{
+            answerService.answerQuestion(answer);
+            return ResponseResult.<Void>builder()
+                    .code(201)
+                    .msg("问题提交成功")
+                    .build();
+        }catch(Exception e){
+            return ResponseResult.<Void>builder()
+                    .code(400)
+                    .msg(e.getMessage())
+                    .build();
+        }
     }
 
     @GetMapping("/questionId/{questionId}")
-    public ResponseResult getAnswerByQuestionId(@PathVariable Integer questionId) {
+    public ResponseResult<List<Answer>> getAnswerByQuestionId(@PathVariable Integer questionId) {
         List<Answer> answerList = answerService.getAnswerByQuestionId(questionId);
-        return ResponseResult.builder().data(answerList).build();
+        return ResponseResult.<List<Answer>>builder()
+                .code(200)
+                .msg("获取questionId为 " + questionId + " 的回复成功！")
+                .data(answerList)
+                .build();
     }
 
     @GetMapping("/userId/{userId}")
-    public ResponseResult getAnswerByUserId(@PathVariable Integer userId) {
+    public ResponseResult<List<Answer>> getAnswerByUserId(@PathVariable Integer userId) {
         List<Answer> answerList = answerService.getAnswerByUserId(userId);
-        return ResponseResult.builder().data(answerList).build();
+        return ResponseResult.<List<Answer>>builder()
+                .code(200)
+                .msg("获取userId为 " + userId + " 的问题成功")
+                .data(answerList)
+                .build();
     }
 }
