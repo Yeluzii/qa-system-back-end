@@ -9,6 +9,7 @@ import java.util.List;
 public interface QuestionMapper {
     void insertQuestion(Question question);
     List<Question> findAll();
+    List<Question> selectByPage(int limit, int offset);
     Question findById(Integer id);
     List<Question> findByUserId(Integer userId);
     List<Question> findSpecialQuestion(String keyword);

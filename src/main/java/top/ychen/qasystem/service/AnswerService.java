@@ -5,7 +5,8 @@ import top.ychen.qasystem.entity.Answer;
 import java.util.List;
 
 public interface AnswerService {
-    public void answerQuestion(Answer answer);
+     void answerQuestion(Answer answer);
     List<Answer> getAnswerByQuestionId(Integer questionId);
+    List<Answer> getAnswerByPageByQuestionId(Integer questionId, int limit, int offset);
     List<Answer> getAnswerByUserId(Integer userId);
 }

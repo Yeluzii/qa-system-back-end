@@ -23,6 +23,11 @@ public class AnswerServiceImpl implements AnswerService {
     }
 
     @Override
+    public List<Answer> getAnswerByPageByQuestionId(Integer questionId, int limit, int offset) {
+        return answerMapper.findAnswerByPageByQuestionId(questionId, limit, offset);
+    }
+
+    @Override
     public List<Answer> getAnswerByUserId(Integer userId) {
         return answerMapper.findAnswerByUserId(userId);
     }

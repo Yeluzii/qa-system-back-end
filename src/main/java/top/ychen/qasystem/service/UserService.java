@@ -4,7 +4,7 @@ import top.ychen.qasystem.entity.User;
 
 public interface UserService {
     boolean login(String username, String password);
-    void register(User user);
+    boolean register(User user);
     int findUserId(String username);
 
     User findUserByUsername(String username);

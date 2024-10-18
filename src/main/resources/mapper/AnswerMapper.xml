@@ -46,4 +46,13 @@
                  LEFT JOIN questions q ON q.id = a.question_id
         WHERE a.user_id = #{userId}
     </select>
+    <select id="findAnswerByPageByQuestionId" resultMap="answerMap">
+        SELECT u.id as userId,a.id as answerId, u.username,u.avatar, a.content, a.created_at
+        FROM answers a
+                 LEFT JOIN users u ON u.id = a.user_id
+                 LEFT JOIN questions q ON q.id = a.question_id
+        WHERE question_id = #{questionId}
+        ORDER BY created_at DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
 </mapper>

@@ -23,6 +23,11 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    public List<Question> getByPage(int limit, int offset) {
+        return questionMapper.selectByPage(limit, offset);
+    }
+
+    @Override
     public Question findQuestionById(Integer id) {
         return questionMapper.findById(id);
     }

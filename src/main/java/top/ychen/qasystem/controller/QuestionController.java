@@ -6,7 +6,9 @@ import top.ychen.qasystem.common.ResponseResult;
 import top.ychen.qasystem.entity.Question;
 import top.ychen.qasystem.service.QuestionService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/questions")
@@ -37,6 +39,19 @@ public class QuestionController {
                 .code(200)
                 .msg("所有问题获取成功")
                 .data(questions)
+                .build();
+    }
+
+    @GetMapping("/page")
+    public ResponseResult<Map<String,Object>> getByPage(@RequestParam(defaultValue = "6") int limit, @RequestParam(defaultValue = "0") int offset) {
+        Map<String, Object> map = new HashMap<>();
+        List<Question> questions = questionService.getByPage(limit, offset);
+        map.put("questions", questions);
+        map.put("total", questionService.getAllQuestions().size());
+        return ResponseResult.<Map<String,Object>>builder()
+                .code(200)
+                .msg("根据页码获取问题列表成功")
+                .data(map)
                 .build();
     }
 

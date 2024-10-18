@@ -43,13 +43,13 @@ public class UserController {
     @GetMapping("/{uId}")
     public ResponseResult<User> getUserByUsername(@PathVariable Integer uId) {
         User user = userService.findUserById(uId);
-        if (user != null){
+        if (user != null) {
             return ResponseResult.<User>builder()
                     .code(200)
                     .msg("成功获取uId为：" + uId + "的用户信息！")
                     .data(user)
                     .build();
-        }else {
+        } else {
             return ResponseResult.<User>builder()
                     .code(404)
                     .msg("未找到uId为：" + uId + "的用户信息！")
@@ -61,7 +61,7 @@ public class UserController {
     public ResponseResult<Void> login(@RequestBody User user, HttpServletRequest request) {
         try {
 //            User user = User.builder().username(username).password(password).build();
-            if (userService.login(user.getUsername(), user.getPassword())){
+            if (userService.login(user.getUsername(), user.getPassword())) {
                 HttpSession session = request.getSession(true);
                 session.setAttribute("user", user.getUsername());
                 System.out.println(session.getAttribute("user") + " 登录成功");
@@ -69,7 +69,7 @@ public class UserController {
                         .code(200)
                         .msg("登录成功")
                         .build();
-            }else {
+            } else {
                 System.out.println("用户名或密码错误");
                 return ResponseResult.<Void>builder()
                         .code(401)
@@ -85,15 +85,22 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseResult<Void> register(@RequestBody User user) {
+    public ResponseResult<Boolean> register(@RequestBody User user) {
         try {
-            userService.register(user);
-            return ResponseResult.<Void>builder()
-                    .code(201)
-                    .msg("注册成功")
-                    .build();
+            boolean flag = userService.register(user);
+            if (!flag) {
+                return ResponseResult.<Boolean>builder()
+                        .code(409)
+                        .msg("用户名已存在")
+                        .build();
+            } else {
+                return ResponseResult.<Boolean>builder()
+                        .code(201)
+                        .msg("注册成功")
+                        .build();
+            }
         } catch (Exception e) {
-            return ResponseResult.<Void>builder()
+            return ResponseResult.<Boolean>builder()
                     .code(400)
                     .msg(e.getMessage())
                     .build();

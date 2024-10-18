@@ -8,6 +8,7 @@ public interface QuestionService {
     void askQuestion(Question question);
 
     List<Question> getAllQuestions();
+    List<Question> getByPage(int limit, int offset);
     Question findQuestionById(Integer id);
 
     List<Question> findQuestionByUserId(Integer userId);

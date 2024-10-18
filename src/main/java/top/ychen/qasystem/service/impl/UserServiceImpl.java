@@ -18,9 +18,15 @@ public class UserServiceImpl  implements UserService {
     }
 
     @Override
-    public void register(User user) {
-        user.setPassword(PasswordUtil.hashPassword(user.getPassword()));
-        userMapper.insertUser(user);
+    public boolean register(User user) {
+        User userSaved = userMapper.findUserByUsername(user.getUsername());
+        if (userSaved == null){
+            user.setPassword(PasswordUtil.hashPassword(user.getPassword()));
+            userMapper.insertUser(user);
+            return true;
+        }else {
+            return false;
+        }
     }
 
     @Override

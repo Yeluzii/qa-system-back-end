@@ -6,7 +6,9 @@ import top.ychen.qasystem.common.ResponseResult;
 import top.ychen.qasystem.entity.Answer;
 import top.ychen.qasystem.service.AnswerService;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/answers")
@@ -38,6 +40,34 @@ public class AnswerController {
                 .msg("获取questionId为 " + questionId + " 的回复成功！")
                 .data(answerList)
                 .build();
+    }
+
+    @GetMapping("/questionId/{questionId}/page")
+    public ResponseResult<Map<String, Object>> getByPage(@PathVariable Integer questionId, @RequestParam(defaultValue = "3") int limit, @RequestParam(defaultValue = "0") int offset) {
+        if (questionId == null) {
+            return ResponseResult.<Map<String, Object>>builder()
+                    .code(400)
+                    .msg("questionId is required")
+                    .build();
+        }
+
+        try {
+            Map<String, Object> map = new HashMap<>();
+            List<Answer> answers = answerService.getAnswerByPageByQuestionId(questionId, limit, offset);
+            map.put("answers", answers);
+            map.put("total", answerService.getAnswerByQuestionId(questionId).size());
+
+            return ResponseResult.<Map<String, Object>>builder()
+                    .code(200)
+                    .msg("根据页码获取 questionId 为 " + questionId + " 的回复成功")
+                    .data(map)
+                    .build();
+        } catch (Exception e) {
+            return ResponseResult.<Map<String, Object>>builder()
+                    .code(500)
+                    .msg("服务器内部错误: " + e.getMessage())
+                    .build();
+        }
     }
 
     @GetMapping("/userId/{userId}")
