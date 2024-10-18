@@ -45,7 +45,7 @@ public class AnswerController {
         List<Answer> answerList = answerService.getAnswerByUserId(userId);
         return ResponseResult.<List<Answer>>builder()
                 .code(200)
-                .msg("获取userId为 " + userId + " 的问题成功")
+                .msg("获取userId为 " + userId + " 的回复成功")
                 .data(answerList)
                 .build();
     }

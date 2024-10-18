@@ -6,18 +6,21 @@
         VALUES (#{title}, #{content}, #{userId})
     </insert>
     <select id="findAll" resultMap="questionResultMap">
-        SELECT q.id,u.username,u.avatar,q.title,q.content,q.created_at
+        SELECT
+            u.id AS userId,
+            q.id AS questionId,
+            u.username,u.avatar,q.title,q.content,q.created_at
         FROM questions q
         LEFT JOIN users u ON u.id = q.user_id
     </select>
     <resultMap id="questionResultMap" type="top.ychen.qasystem.entity.Question">
-        <id property="id" column="id"/>
+        <id property="id" column="questionId"/>
         <result property="title" column="title"/>
         <result property="content" column="content"/>
         <result property="userId" column="user_id"/>
         <result property="createdAt" column="created_at"/>
         <association property="user" javaType="top.ychen.qasystem.entity.User">
-            <id property="id" column="id"/>
+            <id property="id" column="userId"/>
             <result property="username" column="username"/>
             <result property="avatar" column="avatar"/>
             <result property="email" column="email"/>
@@ -32,19 +35,35 @@
         </collection>
     </resultMap>
     <select id="findById" resultMap="questionResultMap">
-        SELECT q.id,u.username,u.avatar,q.title,q.content,q.created_at
+        SELECT
+            u.id AS userId,
+            q.id AS questionId,
+            u.username,
+            u.avatar,
+            q.title,
+            q.content,
+            q.created_at
         FROM questions q
                  LEFT JOIN users u ON u.id = q.user_id
         WHERE q.id = #{id}
     </select>
     <select id="findByUserId" resultMap="questionResultMap">
-        SELECT q.id,u.username,u.avatar,q.title,q.content,q.created_at
+        SELECT u.id AS userId,
+               q.id AS questionId,
+               u.username,
+               u.avatar,
+               q.title,
+               q.content,
+               q.created_at
         FROM questions q
                  LEFT JOIN users u ON u.id = q.user_id
         WHERE q.user_id = #{userId}
     </select>
     <select id="findSpecialQuestion" resultMap="questionResultMap">
-        SELECT q.id,u.username,u.avatar,q.title,q.content,q.created_at
+        SELECT
+            u.id AS userId,
+            q.id AS questionId,
+            u.username,u.avatar,q.title,q.content,q.created_at
         FROM questions q
                  LEFT JOIN users u ON u.id = q.user_id
         WHERE
