@@ -18,6 +18,11 @@
         FROM users
         WHERE username = #{username}
     </select>
+    <select id="findUserById" resultMap="userResultMap">
+        SELECT u.id,u.username,u.created_at,u.avatar
+        FROM users u
+        WHERE id = #{id}
+    </select>
 
     <insert id="insertUser" parameterType="top.ychen.qasystem.entity.User" useGeneratedKeys="true" keyProperty="id">
         INSERT INTO users(username, password, email)

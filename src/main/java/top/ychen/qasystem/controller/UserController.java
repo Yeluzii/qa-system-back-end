@@ -9,7 +9,7 @@ import top.ychen.qasystem.entity.User;
 import top.ychen.qasystem.service.UserService;
 
 @RestController
-@RequestMapping("users")
+@RequestMapping("/users")
 public class UserController {
 
     @Resource
@@ -25,6 +25,8 @@ public class UserController {
             if (userAttr != null) {
                 String username = (String) userAttr;
                 User user = userService.findUserByUsername(username);
+                user.setPassword(null);
+                user.setEmail(null);
                 return ResponseResult.<User>builder()
                         .code(200)
                         .msg("成功获取")
@@ -36,6 +38,23 @@ public class UserController {
                 .code(401)
                 .msg("未登录")
                 .build();
+    }
+
+    @GetMapping("/{uId}")
+    public ResponseResult<User> getUserByUsername(@PathVariable Integer uId) {
+        User user = userService.findUserById(uId);
+        if (user != null){
+            return ResponseResult.<User>builder()
+                    .code(200)
+                    .msg("成功获取uId为：" + uId + "的用户信息！")
+                    .data(user)
+                    .build();
+        }else {
+            return ResponseResult.<User>builder()
+                    .code(404)
+                    .msg("未找到uId为：" + uId + "的用户信息！")
+                    .build();
+        }
     }
 
     @PostMapping("/login")

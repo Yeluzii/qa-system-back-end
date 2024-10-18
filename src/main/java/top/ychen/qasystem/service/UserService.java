@@ -8,4 +8,5 @@ public interface UserService {
     int findUserId(String username);
 
     User findUserByUsername(String username);
+    User findUserById(Integer uId);
 }
