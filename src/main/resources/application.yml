@@ -2,6 +2,7 @@ server:
   servlet:
     session:
       timeout: 30m
+    context-path:
 
 spring:
   datasource:
@@ -15,5 +16,15 @@ spring:
     view:
       prefix: /WEB-INF/views/
       suffix: .jsp
+  servlet:
+        multipart:
+          max-file-size: 50MB
+          max-request-size: 50MB
+  web:
+    resources:
+      static-locations: classpath:/static/,file:${upload.path}/
+upload:
+        path: D:/idea_projects/qa-system/uploads/
+
 mybatis:
   mapper-locations: classpath:mapper/*.xml

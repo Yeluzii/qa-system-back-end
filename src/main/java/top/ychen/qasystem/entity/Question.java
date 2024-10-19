@@ -16,7 +16,7 @@ public class Question {
     private String title;
     private String content;
     private Integer userId;
-    private java.sql.Timestamp createdAt;
+    private String createdAt;
     private User user;
     private List<Answer> answers;
 }

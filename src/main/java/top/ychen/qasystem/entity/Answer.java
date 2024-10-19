@@ -16,7 +16,7 @@ public class Answer {
     private String content;
     private Integer questionId;
     private Integer userId;
-    private java.sql.Timestamp createdAt;
+    private String createdAt;
     private User user;
     private Question question;
 }
