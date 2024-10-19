@@ -32,27 +32,39 @@ public class QuestionController {
         }
     }
 
-    @GetMapping("/all")
-    public ResponseResult<List<Question>> getAllQuestions() {
-        List<Question> questions = questionService.getAllQuestions();
-        return ResponseResult.<List<Question>>builder()
-                .code(200)
-                .msg("所有问题获取成功")
-                .data(questions)
-                .build();
-    }
+//    @GetMapping("/all")
+//    public ResponseResult<List<Question>> getAllQuestions() {
+//        List<Question> questions = questionService.getAllQuestions();
+//        return ResponseResult.<List<Question>>builder()
+//                .code(200)
+//                .msg("所有问题获取成功")
+//                .data(questions)
+//                .build();
+//    }
 
     @GetMapping("/page")
-    public ResponseResult<Map<String,Object>> getByPage(@RequestParam(defaultValue = "6") int limit, @RequestParam(defaultValue = "0") int offset) {
-        Map<String, Object> map = new HashMap<>();
-        List<Question> questions = questionService.getByPage(limit, offset);
-        map.put("questions", questions);
-        map.put("total", questionService.getAllQuestions().size());
-        return ResponseResult.<Map<String,Object>>builder()
-                .code(200)
-                .msg("根据页码获取问题列表成功")
-                .data(map)
-                .build();
+    public ResponseResult<Map<String, Object>> getByPage(@RequestParam(required = false) String keyword, @RequestParam(defaultValue = "6") int limit, @RequestParam(defaultValue = "0") int offset) {
+        if (keyword == null || keyword.isEmpty()) {
+            Map<String, Object> map = new HashMap<>();
+            List<Question> questions = questionService.getByPage(limit, offset);
+            map.put("questions", questions);
+            map.put("total", questionService.getAllQuestions().size());
+            return ResponseResult.<Map<String, Object>>builder()
+                    .code(200)
+                    .msg("根据页码获取问题列表成功")
+                    .data(map)
+                    .build();
+        } else {
+            List<Question> questions = questionService.findSpecialQuestionByPage(keyword, limit, offset);
+            Map<String, Object> map = new HashMap<>();
+            map.put("questions", questions);
+            map.put("total", questionService.findSpecialQuestion(keyword).size());
+            return ResponseResult.<Map<String, Object>>builder()
+                    .code(200)
+                    .msg("根据关键字获取问题列表成功")
+                    .data(map)
+                    .build();
+        }
     }
 
     @GetMapping("/{id}")
@@ -71,4 +83,5 @@ public class QuestionController {
                     .build();
         }
     }
+
 }

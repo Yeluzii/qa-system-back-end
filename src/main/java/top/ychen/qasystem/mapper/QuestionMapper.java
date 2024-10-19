@@ -12,5 +12,6 @@ public interface QuestionMapper {
     List<Question> selectByPage(int limit, int offset);
     Question findById(Integer id);
     List<Question> findByUserId(Integer userId);
+    List<Question> findSpecialQuestionByPage(String keyword, int limit, int offset);
     List<Question> findSpecialQuestion(String keyword);
 }

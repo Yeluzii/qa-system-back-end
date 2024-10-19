@@ -12,5 +12,6 @@ public interface QuestionService {
     Question findQuestionById(Integer id);
 
     List<Question> findQuestionByUserId(Integer userId);
+    List<Question> findSpecialQuestionByPage(String keyword, int limit, int offset);
     List<Question> findSpecialQuestion(String keyword);
 }

@@ -59,7 +59,7 @@
                  LEFT JOIN users u ON u.id = q.user_id
         WHERE q.user_id = #{userId}
     </select>
-    <select id="findSpecialQuestion" resultMap="questionResultMap">
+    <select id="findSpecialQuestionByPage" resultMap="questionResultMap">
         SELECT
             u.id AS userId,
             q.id AS questionId,
@@ -69,6 +69,8 @@
         WHERE
                 q.title LIKE CONCAT('%', #{keyword}, '%')
         OR q.content LIKE CONCAT('%', #{keyword}, '%')
+        ORDER BY q.created_at DESC
+        LIMIT #{limit} OFFSET #{offset}
     </select>
     <select id="selectByPage" resultMap="questionResultMap">
         SELECT u.id AS userId,
@@ -82,5 +84,18 @@
                  LEFT JOIN users u ON u.id = q.user_id
         ORDER BY q.created_at DESC
         LIMIT #{limit} OFFSET #{offset}
+    </select>
+    <select id="findSpecialQuestion" resultType="top.ychen.qasystem.entity.Question">
+        SELECT u.id AS userId,
+               q.id AS questionId,
+               u.username,
+               u.avatar,
+               q.title,
+               q.content,
+               q.created_at
+        FROM questions q
+                 LEFT JOIN users u ON u.id = q.user_id
+        WHERE title LIKE CONCAT('%', #{keyword}, '%')
+           OR content LIKE CONCAT('%', #{keyword}, '%')
     </select>
 </mapper>

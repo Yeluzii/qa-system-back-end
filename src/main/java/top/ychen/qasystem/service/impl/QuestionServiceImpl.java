@@ -38,6 +38,11 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    public List<Question> findSpecialQuestionByPage(String keyword,int limit,int offset) {
+        return questionMapper.findSpecialQuestionByPage(keyword, limit, offset);
+    }
+
+    @Override
     public List<Question> findSpecialQuestion(String keyword) {
         return questionMapper.findSpecialQuestion(keyword);
     }
